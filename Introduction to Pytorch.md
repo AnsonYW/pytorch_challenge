@@ -48,7 +48,7 @@ git clone https://github.com/udacity/deep-learning-v2-pytorch.git
 
 ## 2. Single layer neural network
 
-![single_layer_neural_network_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/single_layer_neural_network_1.jpg)
+![single_layer_neural_network_1](image/single_layer_neural_network_1.jpg)
 
 - How neural networks work?
   - input values x1, x2 multiply them by some weights w and bias
@@ -56,14 +56,14 @@ git clone https://github.com/udacity/deep-learning-v2-pytorch.git
 
 <u>Mathematical representation:</u>
 
-![single_layer_neural_network_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/single_layer_neural_network_2.jpg)
+![single_layer_neural_network_2](image/single_layer_neural_network_2.jpg)
 
-![single_layer_neural_network_3](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/single_layer_neural_network_3.jpg)
+![single_layer_neural_network_3](image/single_layer_neural_network_3.jpg)
 
 - The multiplication and sum is the same as a dot or inner product of two vectors, then we get our value h
 - hass h through activation and gets our output y
 
-![single_layer_neural_network_4](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/single_layer_neural_network_4.jpg)
+![single_layer_neural_network_4](image/single_layer_neural_network_4.jpg)
 
 - Vectors are an instance of a tensor, **it is just a generalization of vectors and matrices**
   - A tensor with only 1 dimension is a vector
@@ -154,7 +154,7 @@ tensor.shape
 
 ## 4. Networks Using Matrix Multiplication
 
-![networks_matrix_multiplication_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/networks_matrix_multiplication_1.jpg)
+![networks_matrix_multiplication_1](image/networks_matrix_multiplication_1.jpg)
 
 - Stack up simple neural networks into multi-layer neural network can give network greater power to capture patterns and correlations in your data
 - input = w1, w2, w3 --> vector x
@@ -165,11 +165,11 @@ tensor.shape
 
 <u>Mathematical Representation</u>
 
-![networks_matrix_multiplication_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/networks_matrix_multiplication_2.jpg)
+![networks_matrix_multiplication_2](image/networks_matrix_multiplication_2.jpg)
 
 The output for the above smal network is found by treating the hidden layer as inputs for the output unit
 
-![networks_matrix_multiplication_3](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/networks_matrix_multiplication_3.jpg)
+![networks_matrix_multiplication_3](image/networks_matrix_multiplication_3.jpg)
 
 ### general a network
 
@@ -233,7 +233,7 @@ a
 
 <u>Dataset</u>: MNIST
 
-![neural_networks_in_pytorch](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/neural_networks_in_pytorch.jpg)
+![neural_networks_in_pytorch](image/neural_networks_in_pytorch.jpg)
 
 - It is a whole bunch of grayscale handwritten digits (from 0 - 9)
 
@@ -351,11 +351,11 @@ a
 
 print(output)
 
-![neural_network_solution_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/neural_network_solution_1.jpg)
+![neural_network_solution_1](image/neural_network_solution_1.jpg)
 
 - what we really want our network to tell is the probability of our different classes given some image
   - what is the most likely classes or digits that belong to this image
-    ![neural_network_solution_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/neural_network_solution_2.jpg)
+    ![neural_network_solution_2](image/neural_network_solution_2.jpg)
   - if it is a six, we want most of the probability goes to the bin of sixth class
   - In the image above, each of these different classes is roughly the same (uniform distribution)
   - So what is the way to convert 10 values calculated in our network and turn it into a proper probability distribution
@@ -484,7 +484,7 @@ class Network(nn.Module):
 
 ### Training Neural Networks
 
-![network_architecture_in_pytorch_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/network_architecture_in_pytorch_2.jpg)
+![network_architecture_in_pytorch_2](image/network_architecture_in_pytorch_2.jpg)
 
 - we are going to treat our neural network as a universal function approximator
 - we have desired input and desired output of this function
@@ -498,7 +498,7 @@ class Network(nn.Module):
 
 -  A measure of our prediction error. For example, the mean squared loss is often used in regression and binary classification problems
 
-  ![network_architecture_in_pytorch_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/network_architecture_in_pytorch_1.jpg)
+  ![network_architecture_in_pytorch_1](image/network_architecture_in_pytorch_1.jpg)
 
 - We can adjust our weights such that this loss is minimized
 
@@ -506,14 +506,14 @@ class Network(nn.Module):
 
 #### 2. Gradient Descent
 
-![network_architectures_pytorch_3](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/network_architectures_pytorch_3.jpg)
+![network_architectures_pytorch_3](image/network_architectures_pytorch_3.jpg)
 
 - We can find configurations where the loss is at a minimum and the network is able to predict the correct labels with high accuracy, and the process is called gradient descent
 - **The gradient is the slope of the loss function and points in the direction of fastest change
 
 #### 4. Backpropagation doing gradient descent in multi-layer network
 
-![network_architecture_in_pytorch_4](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/network_architecture_in_pytorch_4.jpg)
+![network_architecture_in_pytorch_4](image/network_architecture_in_pytorch_4.jpg)
 
 - It is an application of the chain rule from calculus
 - It goes through this forward pass through the network to calculate our loss
@@ -535,7 +535,7 @@ class Network(nn.Module):
     - eventually we we back propagate to our weight
       - **calculate the gradient of our weigh, gradient point to the direction with the fastest change to maximize our loss**
       - **so we will substract the gradient off from our weight**
-        ![network_architectures_in_pytorch_5](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/network_architectures_in_pytorch_5.jpg)
+        ![network_architectures_in_pytorch_5](image/network_architectures_in_pytorch_5.jpg)
         - substract with a multiple of learning rate, so we are not taking too large step
     - Finally it will give out a new set of weights, result in a smaller loss
       - because if the each step is too large, the loss will kind of bound around the minimum and never settles in the minimum point
@@ -873,7 +873,7 @@ helper.view_classify(img.view(1, 28, 28), ps)
 
 Output:
 
-![train_a_network_solution_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/train_a_network_solution_1.jpg)
+![train_a_network_solution_1](image/train_a_network_solution_1.jpg)
 
 ## 12. Fashion-MINIST
 
@@ -1550,9 +1550,9 @@ How to deal with full-sized images (like the one you would get from your iphone)
 - Goal
 
   - how to use pre-trained networks to solved challenging problems in computer vision. (6 architectures)
-    ![transfer_learning_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/transfer_learning_1.jpg)
+    ![transfer_learning_1](image/transfer_learning_1.jpg)
 
-    ![transfer_learning_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/transfer_learning_2.jpg)
+    ![transfer_learning_2](image/transfer_learning_2.jpg)
 
           - AlexNet gives us the top one error and the top five error
           - the number stands for the number of layers in this model
@@ -1603,7 +1603,7 @@ How to deal with full-sized images (like the one you would get from your iphone)
     model
     ```
 
-    ![transfer_learning_3](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/transfer_learning_3.jpg)
+    ![transfer_learning_3](image/transfer_learning_3.jpg)
 
     The model is built out of two main parts
 
@@ -1694,180 +1694,193 @@ How to deal with full-sized images (like the one you would get from your iphone)
 
 
 
-          ```python
-          # 2nd way (better) Testing the computation time
-          import time
-          
-          for device in ['cpu', 'cuda']:
-          
-              criterion = nn.NLLLoss()
-              # Only train the classifier parameters, feature parameters are frozen
-              optimizer = optim.Adam(model.classifier.parameters(), lr=0.001)
-          
-              model.to(device)
-          
-              for ii, (inputs, labels) in enumerate(trainloader):
-          
-                  # Move input and label tensors to the GPU
-                  inputs, labels = inputs.to(device), labels.to(device)
-          
-                  start = time.time()
-          
-                  outputs = model.forward(inputs)
-                  loss = criterion(outputs, labels)
-                  loss.backward()
-                  optimizer.step()
-          
-                  if ii==3:
-                      break
-                  
-              print(f"Device = {device}; Time per batch: {(time.time() - start)/3:.3f} seconds")
-          ```
-
-        - **You can write device agnostic code which will automatically use CUDA if it's enabled like so:**
-
-          ```python
-          # at beginning of the script
-          device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-          
-          ...
-          
-          # then whenever you get a new Tensor or Module
-          # this won't copy if they are already on the desired device
-          input = data.to(device)
-          model = MyModule(...).to(device)
-          ```
-
-        - Full example
-
-          ```python
-          # Use GPU if it's available
-          device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-          
-          # we can print the model to see the architecture after running this
-          model = models.densenet121(pretrained=True)
-          
-          
-          # Freeze parameters so we don't backprop through them
-          for param in model.parameters():
-              param.requires_grad = False
-          
-          # Define our new classifier
-          classifier = nn.Sequential(nn.Linear(1024, 256),
-                                           nn.ReLU(),
-                                           nn.Dropout(0.2),
-                                           nn.Linear(256, 2),
-                                           nn.LogSoftmax(dim=1))
-          
-          # print out the model again
-          model.fc = classifier
-          
+~~~python
+      ```python
+      # 2nd way (better) Testing the computation time
+      import time
+      
+      for device in ['cpu', 'cuda']:
+      
           criterion = nn.NLLLoss()
-          
           # Only train the classifier parameters, feature parameters are frozen
-          optimizer = optim.Adam(model.classifier.parameters(), lr=0.003)
-          
-          model.to(device);
-          ```
+          optimizer = optim.Adam(model.classifier.parameters(), lr=0.001)
+      
+          model.to(device)
+      
+          for ii, (inputs, labels) in enumerate(trainloader):
+      
+              # Move input and label tensors to the GPU
+              inputs, labels = inputs.to(device), labels.to(device)
+      
+              start = time.time()
+      
+              outputs = model.forward(inputs)
+              loss = criterion(outputs, labels)
+              loss.backward()
+              optimizer.step()
+      
+              if ii==3:
+                  break
+              
+          print(f"Device = {device}; Time per batch: {(time.time() - start)/3:.3f} seconds")
+      ```
 
-           Training Step:
+    - **You can write device agnostic code which will automatically use CUDA if it's enabled like so:**
 
-          ```python
-          # Alternative way (in the video)
-          
-          
-          epochs = 1
-          steps = 0
-          running_loss = 0
-          print_every = 5
-          for epoch in range(epochs):
-              for inputs, labels in trainloader:
-                  steps += 1
-                  # Move input and label tensors to the default device
-                  inputs, labels = inputs.to(device), labels.to(device)
-                  
-                  optimizer.zero_grad()
-                  
-                  logps = model.forward(inputs)
-                  loss = criterion(logps, labels)
-                  loss.backward()
-                  optimizer.step()
-          
-                  running_loss += loss.item()
-                  
-                  for steps %% print_every == 0:
-                      model.eval()
-                      test_loss = 0
-                      accuracy = 0
-                      
-                      
+      ```python
+      # at beginning of the script
+      device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+      
+      ...
+      
+      # then whenever you get a new Tensor or Module
+      # this won't copy if they are already on the desired device
+      input = data.to(device)
+      model = MyModule(...).to(device)
+      ```
+
+    - Full example
+
+      ```python
+      # Use GPU if it's available
+      device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+      
+      # we can print the model to see the architecture after running this
+      model = models.densenet121(pretrained=True)
+~~~
+
+
+​          
+~~~python
+      # Freeze parameters so we don't backprop through them
+      for param in model.parameters():
+          param.requires_grad = False
+      
+      # Define our new classifier
+      classifier = nn.Sequential(nn.Linear(1024, 256),
+                                       nn.ReLU(),
+                                       nn.Dropout(0.2),
+                                       nn.Linear(256, 2),
+                                       nn.LogSoftmax(dim=1))
+      
+      # print out the model again
+      model.fc = classifier
+      
+      criterion = nn.NLLLoss()
+      
+      # Only train the classifier parameters, feature parameters are frozen
+      optimizer = optim.Adam(model.classifier.parameters(), lr=0.003)
+      
+      model.to(device);
+      ```
+
+       Training Step:
+
+      ```python
+      # Alternative way (in the video)
+~~~
+
+
+​          
+```python
+      epochs = 1
+      steps = 0
+      running_loss = 0
+      print_every = 5
+      for epoch in range(epochs):
+          for inputs, labels in trainloader:
+              steps += 1
+              # Move input and label tensors to the default device
+              inputs, labels = inputs.to(device), labels.to(device)
+              
+              optimizer.zero_grad()
+              
+              logps = model.forward(inputs)
+              loss = criterion(logps, labels)
+              loss.backward()
+              optimizer.step()
+      
+              running_loss += loss.item()
+              
+              for steps %% print_every == 0:
+                  model.eval()
+                  test_loss = 0
+                  accuracy = 0
+```
+
+
+​                      
+~~~python
+                  for inputs, labels in testloader:
+                      logps = model(inputs)
+                      loss = criterion(logps, labels)
+                      test_loss += batch_loss.item()
+                          
+                      # Calculate accuracy
+                      ps = torch.exp(logps)
+                      top_p, top_class = ps.topk(1, dim=1)
+                      equals = top_class == labels.view(*top_class.shape)
+                      accuracy+=torch.mean(equals.type(torch.FloatTensor)).item()
+                          
+                  print(f"Epoch {epoch+1}/{epochs}.. "
+                        f"Train loss: {running_loss/print_every:.3f}.. "
+                        f"Test loss: {test_loss/len(testloader):.3f}.. "
+                        f"Test accuracy: {accuracy/len(testloader):.3f}")
+                  running_loss = 0
+                  model.train()
+      ```
+~~~
+
+
+
+~~~python
+      ```python
+      
+      epochs = 1
+      steps = 0
+      running_loss = 0
+      print_every = 5
+      for epoch in range(epochs):
+          for inputs, labels in trainloader:
+              steps += 1
+              # Move input and label tensors to the default device
+              inputs, labels = inputs.to(device), labels.to(device)
+              
+              optimizer.zero_grad()
+              
+              logps = model.forward(inputs)
+              loss = criterion(logps, labels)
+              loss.backward()
+              optimizer.step()
+      
+              running_loss += loss.item()
+              
+              if steps % print_every == 0:
+                  test_loss = 0
+                  accuracy = 0
+                  model.eval()
+                  with torch.no_grad():
                       for inputs, labels in testloader:
-                          logps = model(inputs)
-                          loss = criterion(logps, labels)
+                          inputs, labels = inputs.to(device), labels.to(device)
+                          logps = model.forward(inputs)
+                          batch_loss = criterion(logps, labels)
+                          
                           test_loss += batch_loss.item()
-                              
+                          
                           # Calculate accuracy
                           ps = torch.exp(logps)
                           top_p, top_class = ps.topk(1, dim=1)
                           equals = top_class == labels.view(*top_class.shape)
-                          accuracy+=torch.mean(equals.type(torch.FloatTensor)).item()
-                              
-                      print(f"Epoch {epoch+1}/{epochs}.. "
-                            f"Train loss: {running_loss/print_every:.3f}.. "
-                            f"Test loss: {test_loss/len(testloader):.3f}.. "
-                            f"Test accuracy: {accuracy/len(testloader):.3f}")
-                      running_loss = 0
-                      model.train()
-          ```
-
-
-
-          ```python
-          
-          epochs = 1
-          steps = 0
-          running_loss = 0
-          print_every = 5
-          for epoch in range(epochs):
-              for inputs, labels in trainloader:
-                  steps += 1
-                  # Move input and label tensors to the default device
-                  inputs, labels = inputs.to(device), labels.to(device)
-                  
-                  optimizer.zero_grad()
-                  
-                  logps = model.forward(inputs)
-                  loss = criterion(logps, labels)
-                  loss.backward()
-                  optimizer.step()
-          
-                  running_loss += loss.item()
-                  
-                  if steps % print_every == 0:
-                      test_loss = 0
-                      accuracy = 0
-                      model.eval()
-                      with torch.no_grad():
-                          for inputs, labels in testloader:
-                              inputs, labels = inputs.to(device), labels.to(device)
-                              logps = model.forward(inputs)
-                              batch_loss = criterion(logps, labels)
-                              
-                              test_loss += batch_loss.item()
-                              
-                              # Calculate accuracy
-                              ps = torch.exp(logps)
-                              top_p, top_class = ps.topk(1, dim=1)
-                              equals = top_class == labels.view(*top_class.shape)
-                              accuracy += torch.mean(equals.type(torch.FloatTensor)).item()
-                              
-                      print(f"Epoch {epoch+1}/{epochs}.. "
-                            f"Train loss: {running_loss/print_every:.3f}.. "
-                            f"Test loss: {test_loss/len(testloader):.3f}.. "
-                            f"Test accuracy: {accuracy/len(testloader):.3f}")
-                      running_loss = 0
-                      model.train()
-          ```
+                          accuracy += torch.mean(equals.type(torch.FloatTensor)).item()
+                          
+                  print(f"Epoch {epoch+1}/{epochs}.. "
+                        f"Train loss: {running_loss/print_every:.3f}.. "
+                        f"Test loss: {test_loss/len(testloader):.3f}.. "
+                        f"Test accuracy: {accuracy/len(testloader):.3f}")
+                  running_loss = 0
+                  model.train()
+      ```
+~~~
 
 
 ## 18. Tips, Tricks and Other Notes

@@ -76,7 +76,7 @@
 - Improve our ability to classify images
 
 - CNN can look into the picture as a whole, learn to identity <u>spatial pattern</u>
-  ![lesson_outline_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/lesson_outline_1.jpg)
+  ![lesson_outline_1](image/lesson_outline_1.jpg)
   - such as prominent colors and shapes
   - or whether the texture is fuzzy or smooth
 - The shapes and colors that define any image and in the object in a image are often called features
@@ -94,14 +94,14 @@
 ## MNIST Dataset
 
 - How to recognize a single object in a image
-  ![image-20181218210435013](/Users/anson/Library/Application Support/typora-user-images/image-20181218210435013.png)
+  ![image-20181218210435013](image/minist_1.png)
 
 - We want to design an image classifier
   - input: image of a hand-written number
   - output: a class of the number
 - How to build this
   - use a mnist database
-    ![mnist_dataset_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/mnist_dataset_2.jpg)
+    ![mnist_dataset_2](image/mnist_dataset_2.jpg)
 - Difficulties in the dataset
   - some "3"s will be recognized as 8
   - some "4" can be recognized as 9
@@ -111,14 +111,14 @@
 
 ## How Computers Interpret Images
 
-![computer_interpret_images_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/computer_interpret_images_1.jpg)
+![computer_interpret_images_1](image/computer_interpret_images_1.jpg)
 
 - images is interpreted as an <u>array</u>
 - each box in the image is called a pixel, and it has a value
 - MNIST database has pictues with 28 pixels high and 28 pixels wide = 28 x 28 array
 - white is encoded as 255, black is encoded as 0
 
-![computer_interpret_images_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/computer_interpret_images_2.jpg)
+![computer_interpret_images_2](image/computer_interpret_images_2.jpg)
 
 - The image is then passed for a pre-processing step
   - <u>normalization</u>: divide all pixel value with 255
@@ -136,13 +136,13 @@
         - For image inputs we need the pixel numbers to be positive, so we often choose to scale the data in a normalized range [0,1]
 - How to classify a image using MLP? **(as it only receives vector as input)**
 
-![computer_interpret_images_3](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/computer_interpret_images_3.jpg)
+![computer_interpret_images_3](image/computer_interpret_images_3.jpg)
 
 - convert any image of array to vector
 - 4 x 4 matrix
 - vector of 16 entries
 
-![computer_interpret_images_4](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/computer_interpret_images_4.jpg)
+![computer_interpret_images_4](image/computer_interpret_images_4.jpg)
 
 - The vector can be fed as the input of the MLP
 
@@ -152,32 +152,32 @@
 
 After training, our model should be able to look at the images that haven't trained on, which is called the <u>test data</u>
 
-![MLP_structure_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/MLP_structure_1.jpg)
+![MLP_structure_1](image/MLP_structure_1.jpg)
 
 - Input layer:
   - images which are converted into vectors with 784 entries, therefore we have 784 nodes 
 - Output layer:
   - 10 different numbers --> so we have 10 nodes --> 10 output values for each of the class
 
-![MLP_structure_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/MLP_structure_2.jpg)
+![MLP_structure_2](image/MLP_structure_2.jpg)
 
 - Output values are often called as "class scores"
   - high scores: the model is very certain that a image falls into certain class
     - e.g. input = 3
       - In the output layer, has high score in class 3 and low score in other classes, 8 may get pretty high scores as 8 looks like 3 in some cases
 
-![MLP_structure_3](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/MLP_structure_3.jpg)
+![MLP_structure_3](image/MLP_structure_3.jpg)
 
 - output layers can be represented as <u>scores</u> or <u>bar chart</u>
   - indicating the relative strength of the scores
 
-![MLP_structure_4](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/MLP_structure_4.jpg)
+![MLP_structure_4](image/MLP_structure_4.jpg)
 
 - The things up to we define is inbetween the input and output layers
   - How many hidden layers we want to include?
   - How many nodes we want to have for each hidden layer?
 
-![MLP_structure_5](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/MLP_structure_5.jpg)
+![MLP_structure_5](image/MLP_structure_5.jpg)
 
 - usually look at the papers or related work as a good guide
 - search for
@@ -190,52 +190,52 @@ After training, our model should be able to look at the images that haven't trai
   - keras + Github (example of good source)
 - Look at the code
 
-![do_research_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/do_research_1.jpg)
+![do_research_1](image/do_research_1.jpg)
 
 - Import mnist dataset
 
-![do_research_3](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/do_research_3.jpg)
+![do_research_3](image/do_research_3.jpg)
 
 - reshape the image
 
-![do_research_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/do_research_2.jpg)
+![do_research_2](image/do_research_2.jpg)
 
 - look at the model
   - <u>**2 layers**</u> with relu activation function
   - dropout inbetween
   - output = number of classes--> softmax
 
-![do_research_4](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/do_research_4.jpg)
+![do_research_4](image/do_research_4.jpg)
 
 - When we look at the source like this, we try to evaluate whether it makes sense
   - more layers, more complex, but we do not want to be too complex
   - small images --> 2 layers should be fine
 
-![do_research_5](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/do_research_5.jpg)
+![do_research_5](image/do_research_5.jpg)
 
 - Keep looking at more sources, and see whether we can find a better one and test it in code
 
 ## Loss & Optimization
 
-![loss_and_optimization_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/loss_and_optimization_1.jpg)
+![loss_and_optimization_1](image/loss_and_optimization_1.jpg)
 
 - input = image 2, ouput = different scores for different classes
   - the higher the score, the more certain the image is likely to fall into this category
     - e.g. 8 is the largest (most likely) and 3 is the smallest (least likely)
 - However, it is incorrect, we need to learn from mistakes
 
-![loss_and_optimization_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/loss_and_optimization_2.jpg)
+![loss_and_optimization_2](image/loss_and_optimization_2.jpg)
 
 - Backpropagation: compute the gradient of the loss with respect to the model's weight
   - find out which weight is responsible for any errors
 - Optimization function (e.g. gradient descent)
 
-![loss_and_optimization_3](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/loss_and_optimization_3.jpg)
+![loss_and_optimization_3](image/loss_and_optimization_3.jpg)
 
 - make this output value more interpretable
   - apply softmax activation function
 
-![loss_and_optimization_4](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/loss_and_optimization_4.jpg)
+![loss_and_optimization_4](image/loss_and_optimization_4.jpg)
 
 - then we will get the 10 values bounded in the green box
 - our goal is to update the weight of the network and respond to the mistakes, so next time the model will predict 2 is most likely to be the predicted class
@@ -245,19 +245,19 @@ After training, our model should be able to look at the images that haven't trai
     - take the negative log loss of the value = 1.82
   - backpropagation will find out which weight is responsible for each error
 
-![loss_and_optimization_5](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/loss_and_optimization_5.jpg)
+![loss_and_optimization_5](image/loss_and_optimization_5.jpg)
 
 - we get a better value when the prediction is better
 
-![loss_and_optimization_6](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/loss_and_optimization_6.jpg)
+![loss_and_optimization_6](image/loss_and_optimization_6.jpg)
 
 - the goal is to minimize the loss function, therefore it can give us the most accurate predictions
 
-![loss_and_optimization_7](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/loss_and_optimization_7.jpg)
+![loss_and_optimization_7](image/loss_and_optimization_7.jpg)
 
 - we need to find a way to decent to the lowest value, which is the road of an optimizer
 
-![loss_and_optimization_8](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/loss_and_optimization_8.jpg)
+![loss_and_optimization_8](image/loss_and_optimization_8.jpg)
 
 - there are a number of ways to perform gradient descent
 - each method has a corresponding optimizer
@@ -312,7 +312,7 @@ test_loader = torch.utils.data.DataLoader(test_data, batch_size=batch_size,
 
 <u>First step in any image classification task: Visualize a Batch of Training Data</u>
 
-![define_network_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/define_network_2.jpg)
+![define_network_2](image/define_network_2.jpg)
 
 ```python
 import matplotlib.pyplot as plt
@@ -334,7 +334,7 @@ for idx in np.arange(20): # plot 20 of them
 ```
 
 View an Image in More detail
-![define_network_3](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/define_network_3.jpg)
+![define_network_3](image/define_network_3.jpg)
 
 ```python
 img = np.squeeze(images[1])
@@ -413,13 +413,13 @@ Important:
 
 It's recommended that you use cross-entropy loss for classification
 
-![train_network_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/train_network_1.jpg)
+![train_network_1](image/train_network_1.jpg)
 
 softmax to the output and apply negative log
 
  - it means you only need class scores
 
-![train_network_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/train_network_2.jpg)
+![train_network_2](image/train_network_2.jpg)
 
 - The losses are averaged across observation for each minibatch
   - each batch size = 20, the losses of each training will be the average of 20
@@ -625,15 +625,15 @@ for idx in np.arange(20):
 
 ## Model Validation
 
-![model_validation_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/model_validation_1.jpg)
+![model_validation_1](image/model_validation_1.jpg)
 
-![model_validation_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/model_validation_2.jpg)
+![model_validation_2](image/model_validation_2.jpg)
 
 - The exact epoch to stop training is hard to determine
 - Criteria
   - accurate but not overfitting
 
-![model_validation_3](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/model_validation_3.jpg)
+![model_validation_3](image/model_validation_3.jpg)
 
 - Divide the dataset into training, validation and test set
 - After training, we look at the loss of both training set and validation set
@@ -641,12 +641,12 @@ for idx in np.arange(20):
     - so that it is possible to tell us whether our model can be generalized
   - we try to find all patterns in the training set
 
-![model_validation_4](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/model_validation_4.jpg)
+![model_validation_4](image/model_validation_4.jpg)
 
 - The part the training loss is decreasing and validation loss is increasing
   - Overfitting
 
-![model_validation_5](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/model_validation_5.jpg)
+![model_validation_5](image/model_validation_5.jpg)
 
 If we have multiple architectures to choose from (e.g number of layer)
 
@@ -806,7 +806,7 @@ Why we need to create validation instead of simply using the test set?
 
 <u>Full pipeline</u>
 
-![model_classification_step](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/model_classification_step.jpg)
+![model_classification_step](image/model_classification_step.jpg)
 
 ## MLPs vs CNNs
 
@@ -814,17 +814,17 @@ Why we need to create validation instead of simply using the test set?
 
 - highest accuarcy in MNIST
 
-  - ![mlp_vs_cnn_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/mlp_vs_cnn_1.jpg)
+  - ![mlp_vs_cnn_1](image/mlp_vs_cnn_1.jpg)
 
     - MLP performs very well in the very organized dataset like MNIST
 
-    ![mlp_vs_cnn_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/mlp_vs_cnn_2.jpg)
+    ![mlp_vs_cnn_2](image/mlp_vs_cnn_2.jpg)
 
     - there should be situation in which data does not lie in the middle of the grid, it can be small and large
     - In these cases, CNN truely shines
     - Why?
 
-    ![mlp_vs_cnn_3](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/mlp_vs_cnn_3.jpg)
+    ![mlp_vs_cnn_3](image/mlp_vs_cnn_3.jpg)
 
     - feed image to MLP
     - first convert the image into vector
@@ -835,7 +835,7 @@ Why we need to create validation instead of simply using the test set?
 
 ## Local Connectivity - towards motivating and defining CNNs
 
-![local_connectivity_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/local_connectivity_1.jpg)
+![local_connectivity_1](image/local_connectivity_1.jpg)
 
 | MLP                                                          | CNNs                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -843,7 +843,7 @@ Why we need to create validation instead of simply using the test set?
 
 
 
-![local_connectivity_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/local_connectivity_2.jpg)
+![local_connectivity_2](image/local_connectivity_2.jpg)
 
 - Example: 4 x 4 images of handwritten digits
 - goal is to classify the digit that's depicted in the image
@@ -857,19 +857,19 @@ Why we need to create validation instead of simply using the test set?
         - if the model is good --> predict a seven most probably
         - simplication as follows
 
-![local_connectivity_3](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/local_connectivity_3.jpg)
+![local_connectivity_3](image/local_connectivity_3.jpg)
 
 - There may be some redundancy
   - **does every hidden node need to be connected to every pixel in the original image**
   - perhaps not, we can break the image into four regions
 
-![local_connectivity_4](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/local_connectivity_4.jpg)
+![local_connectivity_4](image/local_connectivity_4.jpg)
 
 - four regions include 1) red, 2) green, 3) yellow and 4) blue
 - each hidden node could be connected to only the pixels in one of these four regions
 - Here, each headed node sees only a quarter of the original image
 
-![local_connectivity_5](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/local_connectivity_5.jpg)
+![local_connectivity_5](image/local_connectivity_5.jpg)
 
 - again comparing with the previous mentioned fully-connected layer, an understanding of the entire image all at once
 - the new regional breakdown and the assignment of small local groups of pixels to different hidden nodes, every hidden node finds patterns in only one of the four region in the image
@@ -878,9 +878,9 @@ Why we need to create validation instead of simply using the test set?
   - it uses far fewer parameters than a densely connected layer
   - It is then less prone to overfitting and truly understands how to tease out the patterns contained in image data.
 
-![local_connectivity_9](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/local_connectivity_9.jpg)
+![local_connectivity_9](image/local_connectivity_9.jpg)
 
-![local_connectivity_6](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/local_connectivity_6.jpg)
+![local_connectivity_6](image/local_connectivity_6.jpg)
 
 - **we can rearrange each of these vectors as a matrix**
   - The relationships between the nodes in each layer are more obvious
@@ -888,13 +888,13 @@ Why we need to create validation instead of simply using the test set?
   - After all, by expanding the number nodes in the hidden layer, we can discover more complex patterns in our data
   - As shown in the above, we now have two collections of hidden nodes where each collection contains nodes responsible for examing a different region of the image.
 
-![local_connectivity_10](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/local_connectivity_10.jpg)
+![local_connectivity_10](image/local_connectivity_10.jpg)
 
 - it will prove useful to have each of the hidden nodes within a collection share a common group of weights
 - The idea being that different regions within the image can share the same kind of information
   - it means evey pattern that's relevant towards understanding the image could appear anywhere within the image
 
-![local_connectivity_8](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/local_connectivity_8.jpg)
+![local_connectivity_8](image/local_connectivity_8.jpg)
 
 - Example
   - you want your network to say it's an image containing a cat
@@ -909,21 +909,21 @@ Why we need to create validation instead of simply using the test set?
 - The neural networks mentioned before only look at the individual input
 - CNN can look at the image as a whole or in batches and analyze in groups of pixels in a time
 
-![filters_CNN_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/filters_CNN_1.jpg)
+![filters_CNN_1](image/filters_CNN_1.jpg)
 
 - The key to preserve spacial information is the convolutional layer
 - convolutionay layer applies a series of image filters, also known as convolutional kernels
 
-![filters_CNN_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/filters_CNN_2.jpg)
+![filters_CNN_2](image/filters_CNN_2.jpg)
 
 - The resulting filtered images have different experiences
 - The filters may have extracted features such as
   - edges of object
   - the color that is distinguished from different classes
 
-![filters_CNN_3](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/filters_CNN_3.jpg)
+![filters_CNN_3](image/filters_CNN_3.jpg)
 
-​![filters_CNN_4](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/filters_CNN_4.jpg)
+​![filters_CNN_4](image/filters_CNN_4.jpg)
 
 - spacial information such as the curves and lines that a 6 has to distinguish from other numbers
 - Later layers learn combine different colors and spacial features to produce an output like a class signal
@@ -957,24 +957,24 @@ Why we need to create validation instead of simply using the test set?
 
 ## High-pass Filters
 
-![high_pass_filters_1](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/high_pass_filters_1.jpg)
+![high_pass_filters_1](image/high_pass_filters_1.jpg)
 
 - In image processin, filters are used to filter out unwanted or irrelevant information in an image
 - amplify features like object boundaries or other distinguishing traits
 
-![high_pass_filters_2](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/high_pass_filters_2.jpg)
+![high_pass_filters_2](image/high_pass_filters_2.jpg)
 
 - High-pass filters are used to make an image appear sharper and enhance high-frequency parts of an image, which are areas where the levels of intensity in neighboring pixel rapidly change like very dark to very light pixels
 - Since we are looking at patterns of intensity, the filters we will be working with will be operating on grayscale in greyscale images that represent this information and display paatterns of lightness and darkness format
 
-![behigh_pass_filters_3](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/high_pass_filters_3.jpg)
+![behigh_pass_filters_3](image/high_pass_filters_3.jpg)
 
 - There is no change or a little change in intensity in the original picture,such as in the large areas of dark and light
   - A high-pass filter will black these areas out and the pixels back
   - But in certain areas where a pixel is way brighter than its immediate neighbours, the high-pass filter will enhance that change and create a line
   - we can then see that this has the effect of emphasizing edges
 
-![high_pass_filters_4](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/high_pass_filters_4.jpg)
+![high_pass_filters_4](image/high_pass_filters_4.jpg)
 
 - How does it work?
   - It's a 3 x 3 kernel whose elements all sum to zero
@@ -982,35 +982,35 @@ Why we need to create validation instead of simply using the test set?
   - In this case, subtracting the value of the pixels that surround a certain pixel
   - **if these kernel values did not add up to zero**
 
-![high_pass_filters_5](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/high_pass_filters_5.jpg)
+![high_pass_filters_5](image/high_pass_filters_5.jpg)
 
 - positively weighted (brightening)
 
-![high_pass_filters_6](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/high_pass_filters_6.jpg)
+![high_pass_filters_6](image/high_pass_filters_6.jpg)
 
 - negatively weighted (darkening the entire filtered image respectively)
 
-![high_pass_filters_7](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/high_pass_filters_7.jpg)
+![high_pass_filters_7](image/high_pass_filters_7.jpg)
 
 To apply this fitler, an input image F(xy) is convolved with this kernel
 
 - The convolution is represented by an asterisk, (note that not to be mistaken for a multiplication)
 - kernel convolution is an important operation in computer vision applications and it is the basis for convolutional neural networks
 
-![high_pass_filters_8](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/high_pass_filters_8.jpg)
+![high_pass_filters_8](image/high_pass_filters_8.jpg)
 
 - It involves taking a kernel, which is our small grid of numbers and passing it over an image pixel by pixel transforming it based on what these numbers are 
 - We will see that by changing numbers
 
-![high_pass_filters_9](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/high_pass_filters_9.jpg)
+![high_pass_filters_9](image/high_pass_filters_9.jpg)
 
 - To zoom in
 
-![high_pass_filters_10](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/high_pass_filters_10.jpg)
+![high_pass_filters_10](image/high_pass_filters_10.jpg)
 
 - For every pixel in this greyscale image, we put our kernel over it so that the **pixel is in the center of the kernel** (220 in this case)
 
-![high_pass_filters_11](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/high_pass_filters_11.jpg)
+![high_pass_filters_11](image/high_pass_filters_11.jpg)
 
 - Multiplication
   -  0 * 120
@@ -1028,11 +1028,11 @@ To apply this fitler, an input image F(xy) is convolved with this kernel
     - followed by its closest pixels on the top and bottom and its left and right, which are negative weights that increase the contrast in the image
     - The corners are the farthest away from the center pixel and in this example, we do not give them any weight
 
-![high_pass_filters_12](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/high_pass_filters_12.jpg)
+![high_pass_filters_12](image/high_pass_filters_12.jpg)
 
 - We do this for every pixel position in the original image until you have a complete output image that's about the same size as the input image with new filtered pixel values
 
-![high_pass_filters_13](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/high_pass_filters_13.jpg)
+![high_pass_filters_13](image/high_pass_filters_13.jpg)
 
 - What we need to concern?
 
@@ -1051,7 +1051,7 @@ To apply this fitler, an input image F(xy) is convolved with this kernel
 
 ## Quiz: Kernels
 
-![kernels](/Users/anson/Desktop/Courses/Year 2_FirstSem/Pytorch Challenge/image/kernels.jpg)
+![kernels](image/kernels.jpg)
 
 Answer = D
 
@@ -1094,8 +1094,6 @@ Answer = D
 ## Visualizing CNNs
 
 ## Summary of CNNs
-
-
 
 
 
