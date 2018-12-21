@@ -1059,11 +1059,232 @@ Answer = D
 
 ## OpenCV & Creating Custom Filters
 
+- Introduction of OpenCV
+
+  - it is a **computer vision and machine learning software library** that includes many common image analysis algorithms that will help us build custom, intelligent computer vision applications.
+  - To start with, this includes tools that help us process images and select areas of interest
+
+  ```python
+  import cv2
+  ```
+
+  - Goal of next session
+    - Define your own convolutional filters and apply them to an image of a road
+    - See if you can define filters that detect horizontal or vertical edges
+
 ## Notebook: Finding Edges
 
-## Convolutional Layer
+<u>Import resources and display image</u>
+
+```python
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+
+import cv2 # OpenCV
+import numpy as np
+
+%matplotlib inline
+
+# Read in the image
+image = mpimg.imread('images/curved_lane.jpg') # how to read an image
+
+plt.imshow(image)
+```
+
+![find_edges_1](image/find_edges_1.jpg)
+
+<u>Convert the image to grayscale</u>
+
+```python
+# Convert to grayscale for filtering
+gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
+
+plt.imshow(gray, cmap='gray')
+```
+
+![find_edges_2](image/find_edges_2.jpg)
+
+<u>Create a custom kernel</u>
+
+![find_edges_3](image/find_edges_3.jpg)
+
+```python
+# Create a custom kernel
+
+# 3x3 array for edge detection
+sobel_y = np.array([[ -1, -2, -1], 
+                   [ 0, 0, 0], 
+                   [ 1, 2, 1]])
+
+## TODO: Create and apply a Sobel x operator
+sobel_x = np.array([[-1,0,1],[0,0,0],[-1,0,1]])
+
+
+# Filter the image using filter2D, which has inputs: (grayscale image, bit-depth, kernel)  
+filtered_image = cv2.filter2D(gray, -1, sobel_y) # either sobel_y or sobel_x
+
+plt.imshow(filtered_image, cmap='gray')
+```
+
+![find_edges_4](image/find_edges_4.jpg)
+
+<u>Create other filters (5x5)</u>
+
+```python
+sobel_z = np.array([[-1,-2,-2,-2,-1],
+                     [0,0,0,0,0],
+                    [0,0,0,0,0],
+                    [0,0,0,0,0],
+                    [1,2,2,2,1]])
+filtered_image_1 = cv2.filter2D(gray, -1, sobel_z)
+
+plt.imshow(filtered_image_1, cmap='gray')
+```
+
+![find_edges_6](image/find_edges_6.jpg)
+
+## Convolutional Layer (The importance of Filters)
+
+- different types of filters will be really important as you progress through this course
+-  CNNs are a kind of deep learning model that can learn to do things like image classification and object recognition
+- They keep track of spatial information and *learn* to extract features like the edges of objects in something called a **convolutional layer**.
+- Below you'll see an simple CNN structure, made of multiple layers, below, including this "convolutional layer".
+
+![convolutional_layer_1](image/convolutional_layer_1.jpg)
+
+<u>Convolutional Layer</u>
+
+It is produced by applying a series of many different image filters, also known as convolutional kernels, to an input image
+
+![convolutional_layer_2](image/convolutional_layer_2.jpg)
+
+- In the example shown, 4 different filters produce 4 differently filtered output images
+- we stack these images, we form a complete convolutional layer with a depth of 4
+
+![convolutional_layer_3](image/convolutional_layer_3.jpg)
+
+- From the previous code example, we have been setting the values of filter weights explicitly
+- Neural networks will actually *learn* the best filter weights as they train on a set of image data
+- high-pass and low-pass filters are what define the behavior of a network like this, and you know how to code those from scratch!
+- you'll also find that many neural networks learn to detect the edges of images because **the edges of object contain valuable information about the shape of an object**
 
 ## Convolutional Layers (Part 2)
+
+![CNN_part2_1](image/CNN_part2_1.jpg)
+
+- A single region of this image may have different patterns that we want to detect
+- Like the image shown above, this region has teeth some whisker, and a tongue
+- To understand this image, we <u>need filters for detecting all three of these characteristics</u>
+  - one for each of teeth, whiskers and tongue
+
+![mCNN_part2_2](image/CNN_part2_2.jpg)
+
+- each blue dot represents the output of the kernel when it moves across and along the picture
+- Where we just populate an additional collection of nodes in the convolutional layer
+  - this collection has its own shared set of weights that differ from the weights that differ from the weights for the blue nodes above them
+- It is common to have tens to hundreds of these collections in a convolutional layer, each corresponding to their own filter
+- each filter is formatted in the same way as an image, namely as a matrix of values
+
+![CNN_part2_3](image/CNN_part2_3.jpg)
+
+- Say if we are working with an image of a self-driving car as input
+  - 4 filters, each 4 pixels high and 4 pixels wide
+- Each filter will be convolved across the height and width of the image to produce an entire collection of nodes in the convolutional layer
+
+![CNN_part2_4](image/CNN_part2_4.jpg)
+
+- Since we have 4 filters, we will have 4 collections of nodes
+- In practice, we refer each of these four collections is either feature maps or as activation maps
+
+![CNN_part2_5](image/CNN_part2_5.jpg)
+
+- When we visualize the feature map, we see that they look like filtered images
+- That is we have <u>taken all of the complicated dense information</u> in these four cases <u>ouputted a much simpler image with less information</u>
+- The first two filters discover vertical edges
+- The last two filters detect horizontal edges in the image
+- Can we match the lighter resions in each feature map with their corresponding areas in the original image
+- In the bottom left image, we can see a clear white line defining the right edge of the car
+  - This is because the corresponding regions in the car image closely resemble the filter
+    - where we have a vertical line of dark pixels to the left of a vertical line of lighter pixels
+
+![CNN_part2_6](image/CNN_part2_6.jpg)
+
+- we will soon notice that edges in images appear as a line of lighter pixels next to a line of darker pixels
+- This image for instance contains many regions that would be discovered or detected by one of the four filters we defined before
+- Filters that function as edge detectors are very important in CNNs and we will revisit them later
+- So the above shows that how should we understand convolutional layers that have a grayscale image input
+- What about color images?
+
+![CNN_part2_7](image/CNN_part2_7.jpg)
+
+- gray images are interpreted by the computer as a 2D array with height and width
+
+![CNN_part2_8](image/CNN_part2_8.jpg)
+
+- Color images are interpreted by the computer as a 3D array with height, width and depth
+- This 3D array is best conceptualized as **a stack of three 2D matrices**, where we have matrices correponding to the red,green and blue channels of the image
+- How do we perform a convolution on a color image?
+
+![CNN_part2_9](image/CNN_part2_9.jpg)
+
+- As was the case with grayscale images, we still move a filter horizontally and vertically across the image
+
+![CNN_part2_10](image/CNN_part2_10.jpg)
+
+- Only now the filter is itself three-dimensional to have a value for each color channel at each horizontal and vertical location in the image array (stack of three 2D matrices)
+- We can also think of the filter as a stack of three two-dimensional matrices
+- Both the color image and the filter have red, green and blue channels
+
+![CNN_part2_11](image/CNN_part2_11.jpg)
+
+- Now, to obtain the values of the nodes in the feature map corresponding to this filter
+- we do pretty much the same thing we did before
+- only now, our sum is over three times as many terms
+- here we have depicted the calculation of the value of <u>a single node in a convolutional layer</u> for <u>one filter on a color image</u>
+
+![CNN_part2_12](image/CNN_part2_12.jpg)
+
+- If we wanted to picture the case of a color image with multiple filters
+- instead of having a single 3D array, which corresponds to one filter, we would define multiple 3D arrays, each defining a filter (here we depicted three filters)
+  - we can think of a stack of three 2D arrays
+
+![CNN_part2_13](image/CNN_part2_13.jpg)
+
+- You can think of each of the feature maps in a convolutional layer along the same lines as an image channel and stack them to get a 3D array.
+
+![CNN_part2_14](image/CNN_part2_14.jpg)
+
+- We can use this 3D array as input to still another convolutional layer to discover patterns within the patterns that we discovered in the first convolutional layer
+- We can then do this again to discovr patterns within patterns within patterns
+
+<u>Conclusions</u>
+
+- convolutional layer are not too different from the dense layers that you saw in the previous section
+- Dense layers are fully connected
+  - the nodes are connected to every node in the previous layer
+- Convolutional layer
+  - locally connected
+    - nodes are connected to only a small subsets of the previous layers' nodes
+  - it also had this added parameter sharing
+- In both cases, inference works the same way
+  - both have weights and biases that aarae initially randomly generated
+    - CNNs case
+      - **where the weights take the form of convolutional filters, those filters are randomly generated and so are the patterns that they are initially designed to detect**
+    - As with MLPs, when we constructed to CNN, we will always specify a loss function
+      - In the case of multiclass classification, this will be categorical cross-entropy loss
+      - As we train the model through back propagation, the filters are updated as each epoch to take on values that minimize the loss function
+      - In other words, **the CNN determines what kind of patterns it needs to detect based on the loss function**
+        - if our dataset contains dogs, the CNN is able to on its own, learn filters that look like dogs
+    - **Therefore for CNN, we won't specify the values of the filters or tell the CNN what kind of patterns it needs to detect. These will be learned from the data**
+
+<u>Extra Resources:</u>
+
+http://setosa.io/ev/image-kernels/
+
+- The above website allows us to create our own filter
+- we can use our webcam as input to a convolutional layer and visualize the corresponding activation map
+
+
 
 ## Stride and Padding
 
