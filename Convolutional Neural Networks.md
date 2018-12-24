@@ -1284,17 +1284,456 @@ http://setosa.io/ev/image-kernels/
 - The above website allows us to create our own filter
 - we can use our webcam as input to a convolutional layer and visualize the corresponding activation map
 
-
-
 ## Stride and Padding
+
+We can control the behaviour of the convolutional network by specifying 
+
+- The number of filter
+  - increase number of nodes of the network
+- The size of filter
+  - increase the size of the detective pattern
+
+There are more hyperparameters:
+
+- Stride of the convolution network
+  - amount for which the filter slide
+    - the filter move horizontally and vertically
+
+![stride_padding_1](image/stride_padding_1.jpg)
+
+- **A stride of 1** makes the convolutional layer <u>roughly</u> the same the width and height of the input image
+  - the purple box stands for the stacked feature maps
+
+![stride_padding_2](image/stride_padding_2.jpg)
+
+- **A stride of 2** makes the convolutional layer is <u>roughly</u> about half the width and height of the input image
+  - we say roughly because it depends how do we process at the edge of the image
+
+![stride_padding_3](image/stride_padding_3.jpg)
+
+To see how we process the edges matter
+
+- Below is a gray scale 5x5 image
+  - we have a filter with height and weight = 2
+  - If the stride  = 2:
+    - When the filter move over the edge, the filter is extended out of boundary, and we label as question marks
+
+![stride_padding_4](image/stride_padding_4.jpg)
+
+- How do we deal with these question marked nodes
+  1. we can get rid of the question mark nodes, but we might lose some information of the input image
+     - right and bottom edge of the image
+
+![stride_padding_5](image/stride_padding_5.jpg)
+
+2. second option is to padding missing part with zeros, so this can give fitler more spaces to move
+   1. so we get contributions from all nodes of the input image
+
+![stride_padding_6](image/stride_padding_6.jpg)
 
 ## Pooling Layers
 
+![pooling_1](image/pooling_1.jpg)
+
+- Pooling layers usually take convolutional layers as input
+
+![pooling_2](image/pooling_2.jpg)
+
+- Convolutional layer is often called as a stack of feature maps
+  - where we have one feature map for each filter
+
+![pooling_3](image/pooling_3.jpg)
+
+- Many different object categories might require a large number of filters
+  - each responsible to find a pattern in the image
+- More fitlers mean a bigger stack, which means the dimensionality of the convolutional layer can get quite large, higher dimensionality means we need to get more parameters, which can lead to overfitting
+- So we need a method to reduce the dimensionality, which is called the pooling layer
+- There are different types of pooling layer
+- The following is the max pooling layer
+
+![pooling_4](image/pooling_4.jpg)
+
+- Max pooling layer will take a stack of feature maps as input
+- we will define the window size an stride
+- Let's start with the first feature map, take the maximum of the pixels contained in the window
+  - 1,9,5,4 --> 9
+  - 6,4,7,8 --> 8
+
+![pooling_5](image/pooling_5.jpg)
+
+![pooling_6](image/pooling_6.jpg)
+
+- the height and width will be halve of that of the previous convolutional network
+
+<u>Other kinds of pooling</u>
+
+- It is worth noting that some architectures  choose to use [average pooling](https://pytorch.org/docs/stable/nn.html#avgpool2d), which chooses to average pixel values in a given window size
+  -  in a 2x2 window, this operation will see 4 pixel values, and return a single, average of those four values, as output
+- However, this kind of pooling is <u>typically not used for image classification problems</u> because maxpooling is better at <u>noticing the most important details</u> about edges and other features in an image, but you may see this used in applications for which *smoothing*an image is preferable.
+
 ## Notebook: Layer Visualization
+
+<u>Convolutional Layer Visualization</u>
+
+![layer_visualization_1](image/layer_visualization_1.jpg)
+
+![layer_visualization_2](image/layer_visualization_2.jpg)
+
+<u>Import the image</u>
+
+```python
+import cv2
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+# TODO: Feel free to try out your own images here by changing img_path
+# to a file path to another image on your computer!
+img_path = 'data/udacity_sdc.png'
+
+# load color image 
+bgr_img = cv2.imread(img_path)
+# convert to grayscale
+gray_img = cv2.cvtColor(bgr_img, cv2.COLOR_BGR2GRAY)
+
+# normalize, rescale entries to lie in [0,1]
+gray_img = gray_img.astype("float32")/255
+
+# plot image
+plt.imshow(gray_img, cmap='gray')
+plt.show()
+```
+
+<u>Define and visualize the filter</u>
+
+```python
+import numpy as np
+
+## TODO: Feel free to modify the numbers here, to try out another filter!
+filter_vals = np.array([[-1, -1, 1, 1], [-1, -1, 1, 1], [-1, -1, 1, 1], [-1, -1, 1, 1]])
+
+print('Filter shape: ', filter_vals.shape)
+
+```
+
+```python
+# Defining four different filters, 
+# all of which are linear combinations of the `filter_vals` defined above
+
+# define four filters
+filter_1 = filter_vals
+filter_2 = -filter_1
+filter_3 = filter_1.T
+filter_4 = -filter_3
+filters = np.array([filter_1, filter_2, filter_3, filter_4])
+
+# For an example, print out the values of filter 1
+print('Filter 1: \n', filter_1)
+```
+
+```python
+# visualize all four filters
+fig = plt.figure(figsize=(10, 5))
+for i in range(4):
+    ax = fig.add_subplot(1, 4, i+1, xticks=[], yticks=[])
+    ax.imshow(filters[i], cmap='gray')
+    ax.set_title('Filter %s' % str(i+1))
+    width, height = filters[i].shape
+    for x in range(width):
+        for y in range(height):
+            ax.annotate(str(filters[i][x][y]), xy=(y,x),
+                        horizontalalignment='center',
+                        verticalalignment='center',
+                        color='white' if filters[i][x][y]<0 else 'black')
+```
+
+![layer_visualization_3](image/layer_visualization_3.jpg)
+
+<u>Define a convolutional layer</u>
+
+Initialize a single convolutional layer so that it contains all your created filters. Note that you are not training this network; you are initializing the weights in a convolutional layer so that you can visualize what happens after a forward pass through this network!
+
+#### `__init__` and `forward`
+
+To define a neural network in PyTorch, you define the layers of a model in the function `__init__`and define the forward behavior of a network that applyies those initialized layers to an input (`x`) in the function `forward`. In PyTorch we convert all inputs into the Tensor datatype, which is similar to a list data type in Python.
+
+Below, I define the structure of a class called `Net` that has a convolutional layer that can contain four 3x3 grayscale filters.
+
+```python
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+    
+# define a neural network with a single convolutional layer with four filters
+class Net(nn.Module):
+    
+    def __init__(self, weight):
+        super(Net, self).__init__()
+        # initializes the weights of the convolutional layer to be the weights of the 4 defined filters
+        k_height, k_width = weight.shape[2:]
+        # assumes there are 4 grayscale filters
+        self.conv = nn.Conv2d(1, 4, kernel_size=(k_height, k_width), bias=False)
+        self.conv.weight = torch.nn.Parameter(weight)
+
+    def forward(self, x):
+        # calculates the output of a convolutional layer
+        # pre- and post-activation
+        conv_x = self.conv(x)
+        activated_x = F.relu(conv_x)
+        
+        # returns both layers
+        return conv_x, activated_x
+    
+# instantiate the model and set the weights
+weight = torch.from_numpy(filters).unsqueeze(1).type(torch.FloatTensor)
+model = Net(weight)
+
+# print out the layer in the network
+print(model)
+
+>>output
+Net(
+  (conv): Conv2d(1, 4, kernel_size=(4, 4), stride=(1, 1), bias=False)
+)
+```
+
+The ouput of a convolutional layer before and after a ReLu activation function is applied
+
+```python
+# plot original image
+plt.imshow(gray_img, cmap='gray')
+
+# visualize all filters
+fig = plt.figure(figsize=(12, 6))
+fig.subplots_adjust(left=0, right=1.5, bottom=0.8, top=1, hspace=0.05, wspace=0.05)
+for i in range(4):
+    ax = fig.add_subplot(1, 4, i+1, xticks=[], yticks=[])
+    ax.imshow(filters[i], cmap='gray')
+    ax.set_title('Filter %s' % str(i+1))
+
+    
+# convert the image into an input Tensor
+gray_img_tensor = torch.from_numpy(gray_img).unsqueeze(0).unsqueeze(1)
+
+# get the convolutional layer (pre and post activation)
+conv_layer, activated_layer = model(gray_img_tensor)
+
+# visualize the output of a conv layer
+viz_layer(conv_layer)
+```
+
+#### ReLu activation
+
+In this model, we've used an activation function that scales the output of the convolutional layer. We've chose a ReLu function to do this, and this function simply turns all negative pixel values in 0's (black). See the equation pictured below for input pixel values, `x`.
+
+![layer_visualization_5](image/layer_visualization_5.jpg)
+
+```python
+# after a ReLu is applied
+# visualize the output of an activated conv layer
+viz_layer(activated_layer)
+```
+
+![layer_visualization_6](image/layer_visualization_6.jpg)
+
+<u>Max pooling visualization</u>
+
+![layer_visualization_7](image/layer_visualization_7.jpg)
+
+<u>Import the image</u>--> same
+
+<u>Define and visualize filters</u> --> same
+
+In the next cell, we initialize a convolutional layer so that it contains all the created filters. Then add a maxpooling layer, [documented here](http://pytorch.org/docs/stable/_modules/torch/nn/modules/pooling.html), with a kernel size of (2x2) so you can see that the image resolution has been reduced after this step!
+
+A maxpooling layer reduces the x-y size of an input and only keeps the most *active* pixel values. Below is an example of a 2x2 pooling kernel, with a stride of 2, appied to a small patch of grayscale pixel values; reducing the x-y size of the patch by a factor of 2. Only the maximum pixel values in 2x2 remain in the new, pooled output.
+
+![layer_visualization_8](image/layer_visualization_8.jpg)
+
+```python
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+    
+# define a neural network with a convolutional layer with four filters
+# AND a pooling layer of size (2, 2)
+class Net(nn.Module):
+    
+    def __init__(self, weight):
+        super(Net, self).__init__()
+        # initializes the weights of the convolutional layer to be the weights of the 4 defined filters
+        k_height, k_width = weight.shape[2:]
+        # assumes there are 4 grayscale filters
+        self.conv = nn.Conv2d(1, 4, kernel_size=(k_height, k_width), bias=False)
+        self.conv.weight = torch.nn.Parameter(weight)
+        # define a pooling layer ******************************(NEW)
+        self.pool = nn.MaxPool2d(2, 2)
+
+    def forward(self, x):
+        # calculates the output of a convolutional layer
+        # pre- and post-activation
+        conv_x = self.conv(x)
+        activated_x = F.relu(conv_x)
+        
+        # applies pooling layer *******************************(NEW)
+        pooled_x = self.pool(activated_x)
+        
+        # returns all layers
+        return conv_x, activated_x, pooled_x
+    
+# instantiate the model and set the weights
+weight = torch.from_numpy(filters).unsqueeze(1).type(torch.FloatTensor)
+model = Net(weight)
+
+# print out the layer in the network
+print(model)
+```
+
+<u>Visualize the output of each filter</u>
+
+```python
+# helper function for visualizing the output of a given layer
+# default number of filters is 4
+def viz_layer(layer, n_filters= 4):
+    fig = plt.figure(figsize=(20, 20))
+    
+    for i in range(n_filters):
+        ax = fig.add_subplot(1, n_filters, i+1)
+        # grab layer outputs
+        ax.imshow(np.squeeze(layer[0,i].data.numpy()), cmap='gray')
+        ax.set_title('Output %s' % str(i+1))
+```
+
+```python
+# plot original image
+plt.imshow(gray_img, cmap='gray')
+
+# visualize all filters
+fig = plt.figure(figsize=(12, 6))
+fig.subplots_adjust(left=0, right=1.5, bottom=0.8, top=1, hspace=0.05, wspace=0.05)
+for i in range(4):
+    ax = fig.add_subplot(1, 4, i+1, xticks=[], yticks=[])
+    ax.imshow(filters[i], cmap='gray')
+    ax.set_title('Filter %s' % str(i+1))
+
+    
+# convert the image into an input Tensor
+gray_img_tensor = torch.from_numpy(gray_img).unsqueeze(0).unsqueeze(1)
+
+# get all the layers 
+conv_layer, activated_layer, pooled_layer = model(gray_img_tensor)
+
+# visualize the output of the activated conv layer
+viz_layer(activated_layer)
+```
+
+![layer_visualization_9](image/layer_visualization_9.jpg)
+
+### Visualize the output of the pooling layer
+
+Then, take a look at the output of a pooling layer. The pooling layer takes as input the feature maps pictured above and reduces the dimensionality of those maps, by some pooling factor, by constructing a new, smaller image of only the maximum (brightest) values in a given kernel area.
+
+Take a look at the values on the x, y axes to see how the image has changed size.
+
+```python
+# visualize the output of the pooling layer
+viz_layer(pooled_layer)
+```
+
+![layer_visualization_10](image/layer_visualization_10.jpg)
 
 ## Increasing Depth
 
+![increase_depth_1](image/increase_depth_1.jpg)
+
+- Convolutional layer
+  - detect regional patterns using a series of image filters
+- ReLu activation function
+  - standard the output values
+- Maxpooling layers
+  - occur after convolutional layers
+  - reduce the dimentionality of our output arrays
+- Fully connected layers
+- How to arrange these layers in a complete CNN structure
+
+![increase_depth_2](image/increase_depth_2.jpg)
+
+- Image classification
+  - accept image array as the input
+  - collect thousands of pictures from the internet
+    - They will in different sizes
+    - <u>**CNN requires a fixed size input**</u>
+
+![increase_depth_3](image/increase_depth_3.jpg)
+
+- so we need to pick up an image size and resize all the images into the same size before doing anything
+- pre-processing
+- It is very common to resize all images into a square with spatial dimension equals a power of two
+
+![increase_depth_4](image/increase_depth_4.jpg)
+
+- computer interpret every colored image as a 3D array
+  - color images have height and width in pixels along with red, green, blue channels **corresponding to a depth of 3**
+- gray scale iimage will be interpreted as a 2D array
+  - have its width and height and **a depth of 1**
+- Both cases, the input array all will be much taller and wider than it should be
+
+![increase_depth_5](image/increase_depth_5.jpg)
+
+- CNN architecture will be designed to take this array and make it much deeper
+- convolutional layer will make the array deeper as it passes through the network
+- max pooling will decrease the x-y dimension
+- As the model gets deeper, it is getting more and more complex pattern and features that help to identify the content and its object and it starts recognizing some spacial information about some features like a smooth background and so on (that do not help identifying the image)
+
 ## CNNs for Image Classification
+
+![CNN_image_classification_1](image/CNN_image_classification_1.jpg)
+
+Consider a convolutional network with a series of convolutional layers
+
+- this stack will discover spatial patterns in the image
+- The first convolutional layer look at the pattern of the input image
+- The second convolutional layer look at the pattern in the previous convolutional layer and so on
+
+![CNN_image_classification_2](image/CNN_image_classification_2.jpg)
+
+- Each convolutional layer requires a number of parameters
+- 3 = depth of the input
+  - RGB channels
+- 16 = desired depth of the output
+  - we want to produce 16 different filtered images in this convolutional layer
+- kernel size = size of filter (2x2 to 7x7), 2 = 2x2, 3 =3x3
+- stride: general set to 1 (usually the default value for mini framework)
+
+![CNN_image_classification_3](image/CNN_image_classification_3.jpg)
+
+- for padding, you may get better results if you set your padding such that convolutional layer will have the same width and height as the input of the previous layer
+- with 3 x 3, almost perfectly fit with the image, but miss the image by 1, then we can set the padding as 1
+
+![CNN_image_classification_4](image/CNN_image_classification_4.jpg)
+
+when deciding the depth and number of fitlers, **we usually have increasing number of filter in sequence**
+
+- 1st: 16 
+- 2nd: 32 see the previous output as input
+- 3rd: 64 (depth of 64)
+
+After each convolutional layer, we will apply a ReLU activation function
+
+- from the graph, we can see we have an increasing array in sequence without modifying the height and width
+- The input image has the height and width of 32 x 32
+- the depth increases from 3, 16, 32, 64
+  - yes, we want to increase the depth, but we also want to reduce the height and width and to degards some spatial information, this is where max pooling layers come in
+
+![CNN_image_classification_5](image/CNN_image_classification_5.jpg)
+
+- max pooling layer usually come after the convolutional layer
+- the above has shown the way how to define a maxpooling layer (with the kernel size and stride parameters)
+
+![CNN_image_classification_6](image/CNN_image_classification_6.jpg)
+
+- The most common setting is fitler size 2 and the stride of 2
+  - this can make the dimention half of the input layer
+  - this can help achieve a deeper depth while decreasing the X and Y dimension 
 
 ## Convolutional Layers in Pytorch
 
