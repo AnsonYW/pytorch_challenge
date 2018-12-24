@@ -1735,6 +1735,49 @@ After each convolutional layer, we will apply a ReLU activation function
   - this can make the dimention half of the input layer
   - this can help achieve a deeper depth while decreasing the X and Y dimension 
 
+<u>What is padding?</u>
+
+- It is just adding a border of pixel around and image 
+
+<u>Why do we need padding?</u>
+
+- When we create a convolutional layer, we move a square filter around an image, using a center-pixel as an anchor. So, this kernel cannot perfectly overlay the edges/corners of images.
+- The nice feature of padding is that it will allow us to control the spatial size of the output volumes (most commonly as we’ll see soon we will use it to exactly preserve the spatial size of the input volume so the input and output width and height are the same
+- The most common methods of padding are padding an image with all 0-pixels (zero padding) or padding them with the nearest pixel value. You can read more about calculating the amount of padding, given a kernel_size, [here](http://cs231n.github.io/convolutional-networks/#conv).
+
+<u>How might you define a Maxpooling layer, such that it down-samples an input by a factor of 4?</u>
+
+![CNN_image_classification_7](image/CNN_image_classification_7.jpg)
+
+Answer: the maxpooling function sees every input pixel once, but **any layer** with a stride of 4 will down-sample an input by that factor.
+
+
+
+![image-20181224232807765](image/CNN_image_classification_8.png)
+
+Answer: If you overlay a 7x7 kernel so that its center-pixel is at the right-edge of an image, you will have 3 kernel columns that do not overlay anything! So, that's how big your padding needs to be.
+
+### PyTorch Layer Documentation
+
+#### Convolutional Layers
+
+We typically define a convolutional layer in PyTorch using `nn.Conv2d`, with the following parameters, specified:
+
+```python
+nn.Conv2d(in_channels, out_channels, kernel_size, stride=1, padding=0)
+```
+
+- `in_channels` refers to the depth of an input. For a grayscale image, this depth = 1
+- `out_channels` refers to the desired depth of the output, or the number of filtered images you want to get as output
+- `kernel_size` is the size of your convolutional kernel (most commonly 3 for a 3x3 kernel)
+- `stride` and `padding` have default values, but should be set depending on how large you want your output to be in the spatial dimensions x, y
+
+[Read more about Conv2d in the documentation](https://pytorch.org/docs/stable/nn.html#conv2d).
+
+#### Pooling Layers
+
+Maxpooling layers commonly come after convolutional layers to shrink the x-y dimensions of an input, read more about pooling layers in PyTorch, [here](https://pytorch.org/docs/stable/nn.html#maxpool2d).
+
 ## Convolutional Layers in Pytorch
 
 ## Feature Vector
